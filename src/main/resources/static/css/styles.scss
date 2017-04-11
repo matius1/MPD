@@ -1,0 +1,185 @@
+* {
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #00bff3;
+  }
+}
+
+#home {
+  padding: 30px 0;
+
+  .panel-warning {
+    background: #faaa80;
+
+    h1 {
+      color: #fff;
+      font-size: 40px;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+  }
+
+  .parameters {
+    label {
+      display: block;
+    }
+
+    input {
+      text-align: center;
+      border: 0;
+      border-bottom: 1px solid #555;
+      width: 68px;
+      padding: 4px 0 4px 12px;
+      color: #666;
+      font-size: 16px;
+      margin: 5px 0 30px;
+    }
+  }
+
+  .inputs {
+    position: relative;
+    padding: 0 0 0 50px;
+
+    .machine {
+      width: 50px;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      span {
+        display: block;
+        padding: 7px 0;
+        color: #555;
+        font-size: 16px;
+      }
+    }
+
+    .taskInput {
+      width: 60px;
+      display: inline-block;
+      padding: 0 15px 0 0;
+
+      input {
+        display: block;
+        width: 100%;
+        padding: 3px 0 3px 3px;
+
+        &:first-child {
+          margin: 0 0 10px;
+        }
+      }
+
+      span {
+        display: block;
+        text-align: center;
+        width: 100%;
+        color: #555;
+        font-size: 14px;
+        margin: 5px 0 0;
+      }
+    }
+  }
+
+  input[type="submit"] {
+    color: #fff;
+    background: #00bff3;
+    border: 1px solid #00bff3;
+    padding: 12px 40px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: .3s linear all;
+    display: inline-block;
+    margin: 30px 0 0;
+
+    &:hover {
+      background: #fff;
+      color: #00bff3;
+      transition: .3s linear all;
+    }
+  }
+
+  .result {
+    margin: 40px 0 0;
+    position: relative;
+    height: 125px;
+    padding: 0 0 0 40px;
+    overflow-x: scroll;
+
+    .machine {
+      width: 50px;
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      span {
+        display: block;
+        padding: 7px 0;
+        color: #555;
+        font-size: 16px;
+      }
+    }
+
+    .chart {
+      display: inline-block;
+      position: relative;
+      height: 70px;
+
+      .task {
+        span {
+          height: 35px;
+          position: absolute;
+          color: #fff;
+          line-height: 35px;
+          text-align: center;
+
+          &.firstTask {
+            top: 0;
+          }
+
+          &.secondTask {
+            bottom: 0;
+          }
+        }
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: block;
+      position: relative;
+
+      li {
+        display: inline-block;
+        width: 40px;
+        border-top: 1px solid #555;
+        text-align: right;
+        padding-right: 2px;
+        position: absolute;
+        top: 0;
+
+        &:before {
+          content: '';
+          position: absolute;
+          width: 1px;
+          height: 11px;
+          display: block;
+          top: -6px;
+          right:0;
+          background: #555;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="MyApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Johnson Algorithm</title>
+
+    <link href="../../css/bootstrap-material-design.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css"/>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-route.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/material.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="/angularController.js"></script>
+</head>
+<body ng-controller="MainController">
+<div class="container" id="home">
+    <div class="panel panel-warning">
+        <div class="panel-body">
+            <h1>Algorytm Johnsona dla dwóch maszyn</h1>
+        </div>
+    </div>
+    <form ng-submit="getJohnsonResult()">
+        <div class="parameters">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+                <label>Liczba zadań:</label>
+                <input type="number" min="1" max="16" name="tasksNumber" ng-model="numberOfTasks">
+            </div>
+            <!--<div class="col-md-3">-->
+            <!--<label>Liczba maszyn:</label>-->
+            <!--<input type="number" value="2" disabled />-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-md-3">
+                <input type="submit" value="Oblicz"/>
+            </div>
+        </div>
+        <div class="inputs col-md-12">
+            <div class="col-md-1">
+                <div class="machine"><br>
+                    <span>Maszyna 1:</span>
+                    <span>Maszyna 2:</span>
+                </div>
+            </div>
+            <div class="col-md-11">
+                <div ng-repeat="task in tasks track by $index"
+                     class="taskInput">
+                    <span>Z{{ $index + 1 }}</span>
+                    <input type="number" min="1" ng-model="task.taskTimeMachineFirst" required/>
+                    <input type="number" min="1" ng-model="task.taskTimeMachineSecond" required/>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="result col-md-12" style="height: 125px" ng-show="show">
+        <div class="col-md-1">
+            <div class="machine">
+                <span>Maszyna 1:</span>
+                <span>Maszyna 2:</span>
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="chart">
+                <div class="task"
+                     ng-repeat="task in machineTimes">
+                    <span class="firstTask"
+                          ng-style="{'background': colors[$index],
+                                    'left': task[1] * 40,
+                                    'width': (task[2] - task[1]) * 40}">
+                        {{ 'Z'+task[0] }}
+                    </span>
+                    <span class="secondTask"
+                          ng-style="{'background': colors[$index],
+                                    'left': task[3] * 40,
+                                    'width': (task[4] - task[3]) * 40}">
+                        {{ 'Z'+task[0] }}
+                    </span>
+                </div>
+            </div>
+            <ul>
+                <li ng-repeat="i in getNumber(numberInOsX[4]) track by $index"
+                    ng-style="{'left': $index * 40 }">
+                    <span>{{ $index + 1 }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="result col-md-12" ng-show="show">
+        <div class="col-md-3">
+            <span>Kolejność zadań:</span>
+            <span ng-repeat="machine in machineTimes"
+                 class="taskInput">
+                <span style="font-weight: 600">Z{{ machine[0] }}</span>
+            </span>
+        </div>
+        <span class="col-md-3">
+            <span>Minimalny czas uszeregowania: <span style="font-weight: 600">{{numberInOsX[4]}}</span></span>
+        </span>
+        <div class="col-md-3" id="max">
+            <table>
+                <tbody>
+                <thead>
+                <td></td>
+                <td>M1 start</td>
+                <td>M1 stop</td>
+                <td>M2 start</td>
+                <td>M1 stop</td>
+                </thead>
+                <tr ng-repeat="machine in machineTimes">
+                    <td>Z{{ machine[0] }}</td>
+                    <td>{{ machine[1] }}</td>
+                    <td>{{ machine[2] }}</td>
+                    <td>{{ machine[3] }}</td>
+                    <td>{{ machine[4 ] }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
