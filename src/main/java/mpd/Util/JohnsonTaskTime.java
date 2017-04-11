@@ -3,7 +3,7 @@ package mpd.Util;
 /**
  * Created by Magic on 20.03.2017.
  */
-public class TaskTime {
+public class JohnsonTaskTime {
 
     private int taskTimeMachineFirst;
     private int taskTimeMachineSecond;

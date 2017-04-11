@@ -3,8 +3,8 @@ package mpd.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mpd.Algorithm.Johnson;
 import mpd.Algorithm.McNaughton;
+import mpd.Util.JohnsonTaskTime;
 import mpd.Util.McNaughtonTaskTime;
-import mpd.Util.TaskTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,15 @@ import java.util.List;
 @Controller
 public class AppController {
 
-    @Autowired
-    Johnson johnsonAlgorithm;
+    private final Johnson johnsonAlgorithm;
+
+    private final McNaughton mcNaughton;
 
     @Autowired
-    McNaughton mcNaughton;
+    public AppController(Johnson johnsonAlgorithm, McNaughton mcNaughton) {
+        this.johnsonAlgorithm = johnsonAlgorithm;
+        this.mcNaughton = mcNaughton;
+    }
 
     @RequestMapping(value = "/johnson", method = RequestMethod.GET)
     public String johnsonPage(){
@@ -44,25 +48,25 @@ public class AppController {
     int[][] johnsonAlgorithm(@RequestParam("tasksTimes") String tasksTimes) throws JSONException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
-        ArrayList<TaskTime> taskTimes = new ArrayList<>();
+        ArrayList<JohnsonTaskTime> johnsonTaskTimes = new ArrayList<>();
         JSONArray jArray = new JSONArray(tasksTimes);
             for (int i=0;i<jArray.length();i++){
-                TaskTime taskTime = mapper.readValue(jArray.getString(i),TaskTime.class);
-                taskTimes.add(taskTime);
+                JohnsonTaskTime johnsonTaskTime = mapper.readValue(jArray.getString(i),JohnsonTaskTime.class);
+                johnsonTaskTimes.add(johnsonTaskTime);
             }
 
         int i = 1;
         HashMap<String, Integer> processorOne = new HashMap<>();
         HashMap<String, Integer> processorTwo = new HashMap<>();
-        for (TaskTime taskTime: taskTimes
+        for (JohnsonTaskTime johnsonTaskTime: johnsonTaskTimes
              ) {
-            processorOne.put(("Z"+i),taskTime.getTaskTimeMachineFirst());
-            processorTwo.put(("Z"+i),taskTime.getTaskTimeMachineSecond());
+            processorOne.put(("Z"+i),johnsonTaskTime.getTaskTimeMachineFirst());
+            processorTwo.put(("Z"+i),johnsonTaskTime.getTaskTimeMachineSecond());
             i++;
         }
 
-        List<String> jobs = johnsonAlgorithm.sequencingJobs(processorOne,processorTwo);
-        return johnsonAlgorithm.machineTimes(jobs,processorOne,processorTwo);
+        List<String> jobs = johnsonAlgorithm.execute(processorOne,processorTwo);
+        return johnsonAlgorithm.getMachineTimes(jobs,processorOne,processorTwo);
     }
 
     @RequestMapping(value = "/mcnaughton/getMcNaughtonResult", method = RequestMethod.GET)
@@ -75,25 +79,18 @@ public class AppController {
         ArrayList<McNaughtonTaskTime> mcNaughtonTaskTimes = new ArrayList<>();
         JSONArray jArray = new JSONArray(tasksTimes);
         for (int i=0;i<jArray.length();i++){
-            McNaughtonTaskTime taskTime = mapper.readValue(jArray.getString(i),McNaughtonTaskTime.class);
-            mcNaughtonTaskTimes.add(taskTime);
+            McNaughtonTaskTime mcNaughtonTaskTime = mapper.readValue(jArray.getString(i),McNaughtonTaskTime.class);
+            mcNaughtonTaskTimes.add(mcNaughtonTaskTime);
         }
 
         int i = 1;
         HashMap<String, Integer> machine = new HashMap<>();
-        for (McNaughtonTaskTime taskTime: mcNaughtonTaskTimes
+        for (McNaughtonTaskTime mcNaughtonTaskTime: mcNaughtonTaskTimes
                 ) {
-            machine.put(("Z"+i),taskTime.getTaskTime());
+            machine.put(("Z"+i),mcNaughtonTaskTime.getTaskTime());
             i++;
         }
 
-        return mcNaughton.sequencingJobs(machine, machineNumber);
-    }
-
-    @RequestMapping(value = "/mcnaughton/getMcNaughtonCmax", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    int mcNaughtonCmax() throws JSONException, IOException {
-        return mcNaughton.getCmax();
+        return mcNaughton.execute(machine, machineNumber);
     }
 }

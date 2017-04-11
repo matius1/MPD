@@ -10,14 +10,14 @@ import java.util.*;
 @Component
 public class Johnson {
 
-    public List<String> sequencingJobs(HashMap<String, Integer> machineOne, HashMap<String, Integer> machineTwo) {
+    public List<String> execute(HashMap<String, Integer> machineOne, HashMap<String, Integer> machineTwo) {
         String key;
         List<String> jobs = new ArrayList<>();
         HashMap<String, Integer> L1 = new HashMap<>(); //sorted
         HashMap<String, Integer> L2 = new HashMap<>(); //not sorted
         L1.putAll(machineOne);
         while (L1.size() != 0){
-            key = minIndex(L1);
+            key = getMinIndex(L1);
             if (L1.get(key) < machineTwo.get(key)) {
                 jobs.add(key);
                 L1.remove(key);
@@ -28,7 +28,7 @@ public class Johnson {
             }
         }
         while (L2.size() != 0) {
-            key = maxIndex(L2);
+            key = getMaxIndex(L2);
             jobs.add(key);
             L2.remove(key);
         }
@@ -36,15 +36,15 @@ public class Johnson {
     }
 
 
-    public static String minIndex(HashMap<String, Integer> map) {
+    private static String getMinIndex(HashMap<String, Integer> map) {
         return Collections.min(map.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
     }
 
-    public static String maxIndex(HashMap<String, Integer> map) {
+    private static String getMaxIndex(HashMap<String, Integer> map) {
         return Collections.max(map.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getKey();
     }
 
-    public int[][] machineTimes(List<String> jobs, HashMap<String, Integer> machineOne, HashMap<String, Integer> machineTwo)
+    public int[][] getMachineTimes(List<String> jobs, HashMap<String, Integer> machineOne, HashMap<String, Integer> machineTwo)
     {
         int[][] machineTimes = new int[jobs.size()][5];
         int i = 0;

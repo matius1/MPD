@@ -16,17 +16,13 @@ public class McNaughton {
     private static int processor;
     private static List<Job> jobsTime;
 
-    public int getCmax(){
-        return Cmax;
-    }
-
-    public int[][] sequencingJobs(HashMap<String, Integer> machine, int numberOfMachine) {
+    public int[][] execute(HashMap<String, Integer> machine, int numberOfMachine) {
 
         int maxTime;
         int fullTime = 0;
         processor = 1;
 
-        maxTime = maxTime(machine);
+        maxTime = getMaxTime(machine);
         for (Map.Entry<String, Integer> entry : machine.entrySet()
                 ) {
             fullTime += entry.getValue();
@@ -34,10 +30,10 @@ public class McNaughton {
         int midTimeProc = (int) Math.ceil((double)fullTime/(double)numberOfMachine);
         Cmax = Math.max(maxTime, midTimeProc);
 
-        return machineTimes(machine);
+        return setMachineTimes(machine);
     }
 
-    public int[][] machineTimes(HashMap<String, Integer> machine)
+    private int[][] setMachineTimes(HashMap<String, Integer> machine)
     {
         jobsTime = new ArrayList<>();
         processorTime = Cmax;
@@ -68,7 +64,7 @@ public class McNaughton {
         return machineTimes;
     }
 
-    public static void getTask(Map.Entry<String, Integer> entry, int taskTime){
+    private static void getTask(Map.Entry<String, Integer> entry, int taskTime){
         if(taskTime <= processorTime) {
             jobsTime.add(new Job(entry.getKey(), processor, taskTime));
             processorTime -= taskTime;
@@ -82,7 +78,7 @@ public class McNaughton {
         }
     }
 
-    public static Integer maxTime(HashMap<String, Integer> map){
+    private static Integer getMaxTime(HashMap<String, Integer> map){
         return Collections.max(map.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getValue();
     }
 }
